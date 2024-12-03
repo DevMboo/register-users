@@ -20,7 +20,6 @@ class Auth {
         return session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id']);
     }
 
-    // Método que gerencia a autenticação
     public function handle()
     {
         if (!$this->auth()) {

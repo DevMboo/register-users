@@ -153,15 +153,25 @@ class Router {
 
         if (class_exists($controllerClass)) {
             $instance = new $controllerClass;
-            if(!$exec) {
+
+            if (!$exec) {
                 $instance->render($params);
             } else {
-                $instance->$exec($params);
+                $reflection = new \ReflectionMethod($controllerClass, $exec);
+                $parameters = $reflection->getParameters();
+
+                if (!empty($parameters) && $parameters[0]->getType() && $parameters[0]->getType()->getName() === Request::class) {
+                    $request = new Request($params);
+                    $instance->$exec($request);
+                } else {
+                    $instance->$exec($params);
+                }
             }
         } else {
             throw new \Exception("Controller not found: $controllerClass");
         }
     }
+
     
     protected function serveStaticHtml($url) {
         if (isset($this->fileMap[$url])) {

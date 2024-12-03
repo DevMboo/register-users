@@ -12,12 +12,15 @@ class Request {
 
     protected $params = [];
 
+    protected $body = [];
+
     public function __construct() 
     {
         $this->url = $this->getUrl();
         $this->uri = $this->getUri();
         $this->method = $this->getMethod();
         $this->params = $this->getUrlParams();
+        $this->body = $this->getRequestBody();
     }
 
     private function getCurrentUrl()
@@ -62,5 +65,25 @@ class Request {
     public function getParams()
     {
         return $this->params;
+    }
+
+    public function getRequestBody()
+    {
+        if ($this->method === 'POST') {
+            return $_POST;
+        }
+
+        return [];
+    }
+
+    public function all()
+    {
+        return array_merge($this->params, $this->body);
+    }
+
+    public function get(string $key, $default = null)
+    {
+        $allParams = $this->all();
+        return $allParams[$key] ?? $default;
     }
 }
