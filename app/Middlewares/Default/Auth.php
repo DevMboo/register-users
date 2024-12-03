@@ -17,7 +17,11 @@ class Auth {
 
     public function auth()
     {
-        return session_status() === PHP_SESSION_ACTIVE && isset($_SESSION['user_id']);
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        return isset($_SESSION['user']['id']);
     }
 
     public function handle()
@@ -26,6 +30,5 @@ class Auth {
             $this->response->redirect('/login');
             exit;
         }
-
     }
 }

@@ -107,25 +107,30 @@ class Router {
 
     public function resolve(Request $request) 
     {
-        $currentMethod = $request->getMethod();
-        $currentUrl = $request->getUri();
-        
-        foreach ($this->routes as $route) {
-            if ($route['method'] === $currentMethod && $this->matchUrl($currentUrl, $route['url'])) {
 
-                $this->middlewareManager->handleMiddlewares($route['middlewares'] ?? []);
-
-                if (is_null($route['controller'])) {
-                    $this->serveStaticHtml($route['url']);
+        try {
+            $currentMethod = $request->getMethod();
+            $currentUrl = $request->getUri();
+            
+            foreach ($this->routes as $route) {
+                if ($route['method'] === $currentMethod && $this->matchUrl($currentUrl, $route['url'])) {
+    
+                    $this->middlewareManager->handleMiddlewares($route['middlewares'] ?? []);
+    
+                    if (is_null($route['controller'])) {
+                        $this->serveStaticHtml($route['url']);
+                        return;
+                    }
+    
+                    $this->executeController($route['controller'], $request->getParams(), $route['exec']);
                     return;
                 }
-
-                $this->executeController($route['controller'], $request->getParams(), $route['exec']);
-                return;
             }
+    
+            return $this->serveStaticHtml('/not-found');
+        } catch (\Exception $e) {
+            return $this->serveStaticHtml('/errors');
         }
-
-        $this->serveStaticHtml('/not-found');
     }
 
     protected function matchUrl($currentUrl, $routeUrl) 
@@ -172,6 +177,15 @@ class Router {
         }
     }
 
+    public static function redirect($url)
+    {
+        if (empty($url)) {
+            $url = '/';
+        }
+
+        header("Location: $url");
+        exit;
+    }
     
     protected function serveStaticHtml($url) {
         if (isset($this->fileMap[$url])) {

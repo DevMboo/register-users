@@ -27,7 +27,7 @@ class View
 
         echo $finalContent;
 
-        return new static; // Permite encadear outros métodos
+        return new static;
     }
 
     private static function processTitle($template, $title) 
@@ -41,8 +41,8 @@ class View
 
     public static function title($title)
     {
-        self::$title = $title; // Aqui também usamos self::$title
-        return new static; // Permite encadear
+        self::$title = $title;
+        return new static;
     }
 
     private static function getFileContent($filePath)
@@ -57,10 +57,15 @@ class View
     {
         foreach ($data as $key => $value) {
             $placeholder = "{{" . $key . "}}";
-            $content = str_replace($placeholder, htmlspecialchars($value, ENT_QUOTES, 'UTF-8'), $content);
+            if (!is_string($value) || strip_tags($value) == $value) {
+                $content = str_replace($placeholder, htmlspecialchars($value, ENT_QUOTES, 'UTF-8'), $content);
+            } else {
+                $content = str_replace($placeholder, $value, $content);
+            }
         }
         return $content;
     }
+
 
     private static function processComponents($content)
     {

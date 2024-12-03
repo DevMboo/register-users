@@ -42,10 +42,14 @@ class Bootstrap {
     }
 
     public function handle() {
-        $request = new Request();
-        $router = new Router($request);
-        
-        $router->resolve($request);
+        try {
+            $request = new Request();
+            $router = new Router($request);
+            
+            $router->resolve($request);
+        } catch (\Exception $e) {
+            echo $e->getMessage();
+        }
     }
     
 }

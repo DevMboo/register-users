@@ -1,5 +1,62 @@
 <div>
-    {{title}}
-    <br>
-    {{description}}
+    <section class="antialiased text-gray-600 h-screen px-4">
+        <div class="flex justify-center h-full">
+            <!-- Table -->
+            <div class="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+                <header class="px-5 py-4 border-b border-gray-100">
+                    <h2 class="font-semibold text-gray-800">Usuários</h2>
+                </header>
+                <div class="p-3">
+                    <div class="overflow-x-auto">
+                        <table class="table-auto w-full">
+                            <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                                <tr>
+                                    <th class="p-2 whitespace-nowrap">
+                                        <div class="font-semibold text-left">Nome</div>
+                                    </th>
+                                    <th class="p-2 whitespace-nowrap">
+                                        <div class="font-semibold text-left">Email</div>
+                                    </th>
+                                    <th class="p-2 whitespace-nowrap">
+                                        <div class="font-semibold text-left">Idade</div>
+                                    </th>
+                                    <th class="p-2 whitespace-nowrap">
+                                        <div class="font-semibold text-center"></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm divide-y divide-gray-100">
+                                {{users}}
+                                <tr>
+                                    <form action="/save" method="post">
+                                        <td class="p-2 whitespace-nowrap">
+                                            <label class="block font-semibold">Nome completo </label>
+                                            <input name="name" type="text" class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            <div class="text-left">
+                                                <label class="block font-semibold">E-mail</label>
+                                                <input name="email" type="email" class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+                                            </div>
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            <div class="text-left">
+                                                <label class="block font-semibold">Idade</label>
+                                                <input name="age" type="text" class="border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-indigo-500 focus:ring-1 rounded-md">
+                                            </div>
+                                        </td>
+                                        <td class="p-2 whitespace-nowrap">
+                                            <div class="text-lg text-center">
+                                                <button type="submit" class="w-full py-2 mt-7 rounded-lg text-white bg-indigo-600">Salvar</button>
+                                            </div>
+                                        </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
